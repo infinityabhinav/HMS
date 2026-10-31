@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f8f5ee"/>
+  <circle cx="925" cy="320" r="235" fill="#eee9dd"/>
+  <circle cx="925" cy="320" r="196" fill="none" stroke="#d7cdb8"/>
+  <rect x="760" y="85" width="300" height="460" rx="4" fill="#f5f0e4" stroke="#cfc4ad"/>
+  <text x="105" y="155" fill="#8a7c5e" font-family="Arial,sans-serif" font-size="19" font-weight="700" letter-spacing="5">DIGITAL HAIR-CARE GUIDE</text>
+  <text x="105" y="260" fill="#183d32" font-family="Georgia,serif" font-size="66">Understand your hair.</text>
+  <text x="105" y="340" fill="#5f7660" font-family="Georgia,serif" font-size="66">Build a better routine.</text>
+  <text x="105" y="405" fill="#68756c" font-family="Arial,sans-serif" font-size="25">A thoughtful guide to hair-care habits, scalp health and more.</text>
+  <text x="792" y="145" fill="#837857" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="3">HAIRCARE GUIDE · VOL. 01</text>
+  <text x="792" y="220" fill="#234333" font-family="Georgia,serif" font-size="37">THE HAIR FALL</text>
+  <text x="792" y="269" fill="#234333" font-family="Georgia,serif" font-size="37">CONTROL GUIDE</text>
+  <text x="792" y="319" fill="#6d7669" font-family="Georgia,serif" font-size="18">A 90-Day Journey to Healthier Hair</text>
+  <path d="M815 480c80-65 110-160 138-275m-99 218c-30-15-47-34-50-60m89-37c30 0 50-12 65-30m-28-42c-25-12-37-29-40-50" fill="none" stroke="#496b50" stroke-width="4" stroke-linecap="round"/>
+  <path d="M847 422c-18-8-28-21-27-39 18 4 28 18 27 39m51-48c14-17 29-21 45-17-9 16-25 22-45 17m-39-95c-18-11-24-25-19-41 16 8 22 21 19 41m92-31c13-15 27-20 42-17-9 15-23 21-42 17" fill="#a8b9a0" stroke="#496b50" stroke-width="2"/>
+</svg>
