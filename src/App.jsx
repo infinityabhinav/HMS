@@ -280,7 +280,7 @@ function App() {
               ) : (
                 <button className="buy-button buy-button--disabled" type="button" disabled aria-describedby="payment-config-note">Buy now — ₹9 <ArrowRight size={17} /></button>
               )}
-              {!paymentConfigured && <p className="payment-config-note" id="payment-config-note">Add your PhonePe link in <code>src/config.js</code> to enable checkout.</p>}
+              {!paymentConfigured && <p className="payment-config-note" id="payment-config-note">Add your Razorpay Payment Link URL in <code>src/config.js</code> to enable checkout.</p>}
               <div className="price-assurance"><ShieldCheck size={16} /><span>One-time payment</span><i /><span>Digital PDF</span></div>
               <p className="physical-note">Digital product. No physical delivery.</p>
               <p className="refund-note">No refunds for completed digital purchases, except where required by law.</p>

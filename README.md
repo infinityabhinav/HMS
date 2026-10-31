@@ -13,13 +13,13 @@ Create a production build with `npm run build`; preview it locally with `npm run
 
 ## Configure before launch
 
-1. Replace `PAYMENT_LINK` in `src/config.js` with your PhonePe hosted payment URL. Until it is set to an HTTPS URL, checkout stays disabled. The site never treats a click or redirect as proof of payment.
+1. Create a Razorpay Payment Link and replace `PAYMENT_LINK` in `src/config.js` with its hosted URL. Until it is set to an HTTPS URL, checkout stays disabled. Do not put Razorpay API keys or secrets in frontend code. The site never treats a click or redirect as proof of payment.
 2. Add your real support and business details and final privacy and terms text in `src/App.jsx` before publishing. Review the refund and medical disclaimer wording for your business and applicable laws; contact, privacy and terms currently contain launch placeholders.
 3. Add the real PDF only after choosing a delivery method. The configured `PDF_PATH` is an integration reference; the browser does not expose a download button or unlock the file.
 
 ## Secure payment and PDF delivery
 
-For paid downloads, connect the PhonePe checkout to a server-side integration. The server should create/verify payment orders using private credentials held in server environment variables, accept only authenticated provider confirmation or a verified webhook, and issue a short-lived download URL after it confirms the paid order. Keep the PDF in private object storage or outside the static `public/` directory. See `public/ebook/README.md` for why a file placed in `public/` is not private.
+For paid downloads, connect Razorpay to a server-side integration. The server should verify payment using private credentials held in server environment variables, accept only verified provider confirmation or a validated webhook, and issue a short-lived download URL after it confirms the paid order. Keep the PDF in private object storage or outside the static `public/` directory. See `public/ebook/README.md` for why a file placed in `public/` is not private.
 
 The static storefront intentionally has no payment verification or download endpoint. Do not add private payment credentials to React code or treat a return URL as payment confirmation.
 
