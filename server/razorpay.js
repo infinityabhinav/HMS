@@ -87,8 +87,21 @@ async function guideIsAvailable() {
     // Vercel Blob resolves its project OIDC credentials automatically. On
     // other hosts, @vercel/blob can fall back to BLOB_READ_WRITE_TOKEN.
     const guide = await head(GUIDE_BLOB_PATH)
-    return guide.size > 0 && guide.contentType === 'application/pdf'
-  } catch {
+    if (!guide || guide.size <= 0 || guide.contentType !== 'application/pdf') {
+      console.error('Guide Blob check found no usable PDF.', {
+        found: Boolean(guide),
+        size: guide?.size ?? null,
+        contentType: guide?.contentType ?? null,
+      })
+      return false
+    }
+    return true
+  } catch (error) {
+    // Log only the error type/status; never log tokens or request headers.
+    console.error('Guide Blob check failed.', {
+      name: error?.name ?? 'UnknownError',
+      status: error?.status ?? error?.statusCode ?? null,
+    })
     return false
   }
 }
