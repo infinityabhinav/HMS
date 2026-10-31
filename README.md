@@ -14,7 +14,7 @@ Create a production build with `npm run build`; preview it locally with `npm run
 ## Configure before launch
 
 1. Replace `PAYMENT_LINK` in `src/config.js` with your PhonePe hosted payment URL. Until it is set to an HTTPS URL, checkout stays disabled. The site never treats a click or redirect as proof of payment.
-2. Add your real support contact details and final privacy, terms and refund text in `src/App.jsx` before publishing. The current policy dialogs are launch placeholders.
+2. Add your real support and business details and final privacy and terms text in `src/App.jsx` before publishing. Review the refund and medical disclaimer wording for your business and applicable laws; contact, privacy and terms currently contain launch placeholders.
 3. Add the real PDF only after choosing a delivery method. The configured `PDF_PATH` is an integration reference; the browser does not expose a download button or unlock the file.
 
 ## Secure payment and PDF delivery

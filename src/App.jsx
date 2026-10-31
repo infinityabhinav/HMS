@@ -86,8 +86,8 @@ const policies = {
   'Contact Us': 'Add your customer-support email address here before launch so buyers know how to reach you with questions about their order.',
   'Privacy Policy': 'Add your business contact details and final privacy policy before launch. If you later connect a payment provider or analytics service, explain what information those services collect and link to their policies.',
   'Terms and Conditions': 'This is a digital educational product. Add your seller details, delivery terms, permitted use and any other terms that apply to your business before launch.',
-  'Refund Policy': 'Add your refund and cancellation terms before launch. Make sure they are clear to buyers before they complete a purchase.',
-  'Medical Disclaimer': 'This guide is for general educational purposes only. It is not medical advice, diagnosis or treatment. Hair fall can have many causes; consult a qualified healthcare professional about persistent or concerning symptoms.',
+  'Refund Policy': 'No refunds are offered for completed digital purchases, except where applicable law requires otherwise.',
+  'Medical Disclaimer': 'This guide is for general educational and wellness purposes only. It does not provide diagnosis, treatment or personalized medical advice. Hair loss can have many causes; consult a qualified healthcare professional about sudden, severe, patchy, painful, persistent or unexplained hair loss. Herbal preparations may cause irritation or allergic reactions; follow the safety notes and stop use if a reaction occurs. The author and publisher are not responsible for adverse effects resulting from inappropriate use of the information in this guide, to the extent permitted by applicable law.',
 }
 
 function BrandMark({ compact = false }) {
@@ -283,6 +283,7 @@ function App() {
               {!paymentConfigured && <p className="payment-config-note" id="payment-config-note">Add your PhonePe link in <code>src/config.js</code> to enable checkout.</p>}
               <div className="price-assurance"><ShieldCheck size={16} /><span>One-time payment</span><i /><span>Digital PDF</span></div>
               <p className="physical-note">Digital product. No physical delivery.</p>
+              <p className="refund-note">No refunds for completed digital purchases, except where required by law.</p>
             </article>
           </div>
           <div className="pricing-bottom-note"><span className="tiny-star">✳</span> A resource to support your routine—not a promise of a particular result.</div>
