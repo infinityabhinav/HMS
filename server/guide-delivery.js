@@ -31,15 +31,9 @@ export async function downloadGuideResponse(request) {
     return jsonResponse(authorization.statusCode, authorization.body)
   }
 
-  const token = process.env.BLOB_READ_WRITE_TOKEN
-  if (!token) {
-    return jsonResponse(503, { error: 'Secure guide storage is not configured.' })
-  }
-
   try {
     const guide = await get(GUIDE_BLOB_PATH, {
       access: 'private',
-      token,
       useCache: false,
     })
 

@@ -83,11 +83,10 @@ function readDownloadToken(token, keySecret) {
 }
 
 async function guideIsAvailable() {
-  const token = process.env.BLOB_READ_WRITE_TOKEN
-  if (!token) return false
-
   try {
-    const guide = await head(GUIDE_BLOB_PATH, { token })
+    // Vercel Blob resolves its project OIDC credentials automatically. On
+    // other hosts, @vercel/blob can fall back to BLOB_READ_WRITE_TOKEN.
+    const guide = await head(GUIDE_BLOB_PATH)
     return guide.size > 0 && guide.contentType === 'application/pdf'
   } catch {
     return false
