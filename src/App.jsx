@@ -14,6 +14,7 @@ import {
   Sprout,
   X,
 } from 'lucide-react'
+import { GUIDE_DOWNLOAD_FILENAME } from './config.js'
 
 const RAZORPAY_CHECKOUT_URL = 'https://checkout.razorpay.com/v1/checkout.js'
 let razorpayScriptPromise
@@ -41,6 +42,27 @@ async function readApiResponse(response) {
   const result = await response.json().catch(() => ({}))
   if (!response.ok) throw new Error(result.error || 'The payment request could not be completed.')
   return result
+}
+
+async function fetchGuideDownload(downloadToken) {
+  const response = await fetch('/api/download-guide', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ download_token: downloadToken }),
+  })
+
+  if (!response.ok) {
+    const result = await response.json().catch(() => ({}))
+    throw new Error(result.error || 'The guide download could not be started.')
+  }
+
+  if (!response.headers.get('Content-Type')?.includes('application/pdf')) {
+    throw new Error('The server did not return the guide PDF.')
+  }
+
+  const pdf = await response.blob()
+  if (!pdf.size) throw new Error('The guide file was empty.')
+  return URL.createObjectURL(pdf)
 }
 
 const navLinks = [
@@ -96,7 +118,7 @@ const questions = [
   },
   {
     question: 'How will I receive the PDF?',
-    answer: 'The PDF should be made available only after payment is verified. This storefront still needs its secure delivery integration.',
+    answer: 'After payment is captured and verified, the PDF download starts automatically. A download link appears if your browser blocks the automatic download.',
   },
   {
     question: 'Can this guide guarantee hair fall control?',
@@ -204,6 +226,8 @@ function App() {
   const [activePolicy, setActivePolicy] = useState('')
   const [checkoutBusy, setCheckoutBusy] = useState(false)
   const [checkoutMessage, setCheckoutMessage] = useState('')
+  const [downloadToken, setDownloadToken] = useState('')
+  const [downloadHref, setDownloadHref] = useState('')
   const razorpayKeyId = import.meta.env.VITE_RAZORPAY_KEY_ID
   const paymentConfigured = Boolean(razorpayKeyId)
 
@@ -218,6 +242,10 @@ function App() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [])
 
+  useEffect(() => () => {
+    if (downloadHref) URL.revokeObjectURL(downloadHref)
+  }, [downloadHref])
+
   function closeMenu() {
     setMenuOpen(false)
   }
@@ -227,6 +255,8 @@ function App() {
 
     setCheckoutBusy(true)
     setCheckoutMessage('Preparing secure checkout…')
+    setDownloadToken('')
+    setDownloadHref('')
 
     try {
       await loadRazorpayCheckout()
@@ -264,8 +294,25 @@ function App() {
               }),
             }))
 
-            if (!result.verified) throw new Error('Payment could not be verified.')
-          setCheckoutMessage('Payment signature verified. Secure PDF delivery is not connected yet; this site is not ready for customer purchases.')
+            if (!result.verified || !result.captured || !result.download_token) {
+              throw new Error('Payment could not be confirmed as captured. No download was issued.')
+            }
+
+            setDownloadToken(result.download_token)
+            try {
+              const fileUrl = await fetchGuideDownload(result.download_token)
+              setDownloadHref(fileUrl)
+              const downloadLink = document.createElement('a')
+              downloadLink.href = fileUrl
+              downloadLink.download = GUIDE_DOWNLOAD_FILENAME
+              downloadLink.style.display = 'none'
+              document.body.appendChild(downloadLink)
+              downloadLink.click()
+              downloadLink.remove()
+              setCheckoutMessage('Payment captured and verified. Your guide download has started.')
+            } catch (error) {
+              setCheckoutMessage(`Payment captured and verified, but the download did not start: ${error.message} Use the download button below; do not pay again.`)
+            }
           } catch (error) {
             setCheckoutMessage(`${error.message || 'Payment verification failed.'} Do not pay again until the seller confirms your order.`)
           } finally {
@@ -284,6 +331,29 @@ function App() {
     } catch (error) {
       setCheckoutBusy(false)
       setCheckoutMessage(error.message || 'Checkout could not be started. Please try again.')
+    }
+  }
+
+  async function retryGuideDownload() {
+    if (!downloadToken || checkoutBusy) return
+    setCheckoutBusy(true)
+    setCheckoutMessage('Retrying the secure guide download…')
+
+    try {
+      const fileUrl = await fetchGuideDownload(downloadToken)
+      setDownloadHref(fileUrl)
+      const downloadLink = document.createElement('a')
+      downloadLink.href = fileUrl
+      downloadLink.download = GUIDE_DOWNLOAD_FILENAME
+      downloadLink.style.display = 'none'
+      document.body.appendChild(downloadLink)
+      downloadLink.click()
+      downloadLink.remove()
+      setCheckoutMessage('Your guide download has started.')
+    } catch (error) {
+      setCheckoutMessage(`${error.message} Do not pay again; contact the seller if the problem continues.`)
+    } finally {
+      setCheckoutBusy(false)
     }
   }
 
@@ -377,14 +447,16 @@ function App() {
                 disabled={!paymentConfigured || checkoutBusy}
                 aria-describedby="payment-config-note checkout-message"
               >
-                {checkoutBusy ? 'Opening checkout…' : 'Buy now — ₹9'} <ArrowRight size={17} />
+                {checkoutBusy ? 'Processing…' : 'Buy now — ₹9'} <ArrowRight size={17} />
               </button>
               <p className="payment-config-note" id="payment-config-note">
                 {paymentConfigured
-                  ? 'Checkout is configured. Secure PDF delivery is not connected; do not accept customer payments yet.'
+                  ? 'The guide downloads automatically after payment is captured and verified.'
                   : <>Set <code>VITE_RAZORPAY_KEY_ID</code> to enable checkout.</>}
               </p>
               <p className="payment-config-note" id="checkout-message" aria-live="polite" role="status">{checkoutMessage}</p>
+              {downloadHref && <a className="download-guide-link" href={downloadHref} download={GUIDE_DOWNLOAD_FILENAME}>Download the guide again</a>}
+              {downloadToken && !downloadHref && <button className="download-guide-link" type="button" onClick={retryGuideDownload} disabled={checkoutBusy}>Retry guide download</button>}
               <div className="price-assurance"><ShieldCheck size={16} /><span>One-time payment</span><i /><span>Digital PDF</span></div>
               <p className="physical-note">Digital product. No physical delivery.</p>
               <p className="refund-note">No refunds for completed digital purchases, except where required by law.</p>

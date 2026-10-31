@@ -172,6 +172,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid #a8813e; outline-offs
 .buy-button--disabled { color: #fff; background: #51685a; box-shadow: none; cursor: not-allowed; }
 .payment-config-note { margin: 10px 0 0; color: #4d594d; font-size: 11px; line-height: 1.6; text-align: center; }
 .payment-config-note code { font-size: 11px; font-weight: 700; }
+.download-guide-link { display: block; width: fit-content; margin: 10px auto 0; padding: 8px 12px; border: 1px solid #183d32; border-radius: 3px; color: #183d32; background: #f7f4ec; font-size: 12px; font-weight: 700; text-align: center; cursor: pointer; }
+.download-guide-link:hover { color: #fff; background: #285444; }
+.download-guide-link:disabled { opacity: .6; cursor: not-allowed; }
 .price-assurance { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; color: #4f5e53; font-size: 10px; }
 .price-assurance svg { color: #84917c; }
 .physical-note { margin: 12px 0 0; color: #5d665d; font-size: 10px; text-align: center; }

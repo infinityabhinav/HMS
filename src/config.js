@@ -1,2 +1,2 @@
-// Reserved for a future server-side delivery flow. The browser never unlocks this path.
-export const PDF_PATH = '/ebook/hair-fall-control-guide.pdf'
+// This is only the downloaded filename; the guide itself stays in private server storage.
+export const GUIDE_DOWNLOAD_FILENAME = 'hair-fall-control-guide.pdf'
