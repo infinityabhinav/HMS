@@ -1,7 +1,7 @@
 import { get } from '@vercel/blob'
 import { authorizeGuideDownload } from './razorpay.js'
 
-const GUIDE_BLOB_PATH = 'hair-fall-control-guide.pdf'
+const GUIDE_BLOB_PATH = 'hairfallguide.pdf'
 const GUIDE_FILENAME = 'hair-fall-control-guide.pdf'
 
 function jsonResponse(status, body) {

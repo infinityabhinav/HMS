@@ -4,7 +4,7 @@ import { createHmac, randomUUID, timingSafeEqual } from 'node:crypto'
 
 const PRODUCT_AMOUNT_PAISE = 900
 const PRODUCT_CURRENCY = 'INR'
-const GUIDE_BLOB_PATH = 'hair-fall-control-guide.pdf'
+const GUIDE_BLOB_PATH = 'hairfallguide.pdf'
 const DOWNLOAD_TOKEN_TTL_MS = 15 * 60 * 1000
 
 function jsonResult(statusCode, body) {

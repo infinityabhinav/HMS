@@ -53,7 +53,7 @@ The repository is public, so the paid guide must not be committed to Git or plac
    node --env-file=.env.local scripts/upload-guide.mjs "C:\Users\HP\Downloads\hairfallguide.pdf"
    ```
 
-The upload script stores it as `hair-fall-control-guide.pdf` with private access. The order endpoint checks that this private PDF exists before creating a Razorpay order, so checkout remains unavailable until delivery is ready. After captured payment verification, the browser starts the download automatically and shows a retry link if needed.
+The upload script stores it as `hairfallguide.pdf` with private access. The order endpoint checks that this private PDF exists before creating a Razorpay order, so checkout remains unavailable until delivery is ready. After captured payment verification, the browser downloads it as `hair-fall-control-guide.pdf` and shows a retry link if needed.
 
 For deployment, set `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` as server environment variables, and set `VITE_RAZORPAY_KEY_ID` as a build environment variable in the hosting dashboard. The repository includes Netlify Functions and Vercel API routes. Netlify's build and function paths are configured in `netlify.toml`; Vercel detects the `api/` routes.
 

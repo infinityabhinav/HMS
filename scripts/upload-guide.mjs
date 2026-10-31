@@ -12,7 +12,7 @@ if (pdf.length < 5 || !pdf.subarray(0, 5).equals(Buffer.from('%PDF-'))) {
   throw new Error('The selected file is not a valid PDF.')
 }
 
-const blob = await put('hair-fall-control-guide.pdf', pdf, {
+const blob = await put('hairfallguide.pdf', pdf, {
   access: 'private',
   addRandomSuffix: false,
   allowOverwrite: true,
