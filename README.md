@@ -1,40 +1,59 @@
 # HMS
 
-A responsive React + Vite storefront for **The Hair Fall Control Guide**. Styling uses Tailwind CSS 4 with a small set of hand-written responsive styles; icons use Lucide React.
+A responsive React + Vite storefront for **The Hair Fall Control Guide**. Styling uses Tailwind CSS 4 with hand-written responsive styles; icons use Lucide React.
 
 ## Run locally
+
+Install dependencies, then run the Vite development server:
 
 ```sh
 npm install
 npm run dev
 ```
 
-Create a production build with `npm run build`; preview it locally with `npm run preview`.
+To exercise checkout locally, run the included Netlify functions alongside Vite:
 
-## Configure before launch
+```sh
+npx netlify-cli dev
+```
 
-1. Create a Razorpay Payment Link and replace `PAYMENT_LINK` in `src/config.js` with its hosted URL. Until it is set to an HTTPS URL, checkout stays disabled. Do not put Razorpay API keys or secrets in frontend code. The site never treats a click or redirect as proof of payment.
-2. Add your real support and business details and final privacy and terms text in `src/App.jsx` before publishing. Review the refund and medical disclaimer wording for your business and applicable laws; contact, privacy and terms currently contain launch placeholders.
-3. Add the real PDF only after choosing a delivery method. The configured `PDF_PATH` is an integration reference; the browser does not expose a download button or unlock the file.
+This serves the site at `http://localhost:8888` and routes `/api/create-order` and `/api/verify-payment` to the serverless functions. A Vite-only `npm run dev` does not run those API routes.
 
-## Secure payment and PDF delivery
+Create a production build with `npm run build`; preview the static build with `npm run preview`.
 
-For paid downloads, connect Razorpay to a server-side integration. The server should verify payment using private credentials held in server environment variables, accept only verified provider confirmation or a validated webhook, and issue a short-lived download URL after it confirms the paid order. Keep the PDF in private object storage or outside the static `public/` directory. See `public/ebook/README.md` for why a file placed in `public/` is not private.
+## Razorpay configuration
 
-The static storefront intentionally has no payment verification or download endpoint. Do not add private payment credentials to React code or treat a return URL as payment confirmation.
+The checkout is integrated in test mode. The server creates a fixed-price ₹9 (900 paise) INR order; it does not trust a browser-supplied amount. After checkout, the server fetches the order and checks the HMAC-SHA256 signature before reporting it as verified. The verification approach follows [Razorpay's Standard Checkout integration steps](https://razorpay.com/docs/payments/payment-gateway/web-integration/standard/integration-steps/).
+
+For local development, put these in an ignored `.env` file at the project root:
+
+```dotenv
+RAZORPAY_KEY_ID=your_test_key_id
+RAZORPAY_KEY_SECRET=your_test_key_secret
+VITE_RAZORPAY_KEY_ID=your_test_key_id
+```
+
+`.env.example` shows the variable names. `RAZORPAY_KEY_SECRET` is server-only. `VITE_RAZORPAY_KEY_ID` is public and is included in browser code; never put the secret in a `VITE_` variable or in `src/`.
+
+For deployment, set `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` as server environment variables, and set `VITE_RAZORPAY_KEY_ID` as a build environment variable in the hosting dashboard. The repository includes Netlify Functions and Vercel API routes. Netlify's build and function paths are configured in `netlify.toml`; Vercel detects the `api/` routes.
+
+The site currently reports a verified payment but does not deliver the PDF. **Do not accept customer payments or switch to live keys until secure PDF delivery and customer support details are configured.** Keep the PDF out of the public static directory; see `public/ebook/README.md` for details. A signature check confirms the checkout response; it does not itself deliver the product.
+
+## Before launch
+
+- Configure secure PDF delivery that runs only after server-side payment verification and confirms payment capture before fulfillment.
+- Add a real customer-support address, seller details, and final privacy and terms text in `src/App.jsx`.
+- Review the refund and medical disclaimer wording for your business and applicable laws.
+- Replace test credentials with matching live credentials only after delivery is ready. Keep the secret in the host's server-side environment settings.
 
 ## Deploy
 
 ### Vercel
 
-- Import the project from Git, or run `npm install` and `npm run build`.
-- Framework preset: **Vite**. Build command: `npm run build`. Output directory: `dist`.
-- No environment variables are needed for the static storefront; the public hosted payment URL is configured in `src/config.js`.
+- Import the repository. Use the **Vite** framework preset, `npm run build` as the build command, and `dist` as the output directory.
+- Set `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, and `VITE_RAZORPAY_KEY_ID` in the project's environment settings. Redeploy after changing build variables.
 
 ### Netlify
 
-- Connect the repository, or run `npm install` and `npm run build`.
-- Build command: `npm run build`. Publish directory: `dist`.
-- The project includes `netlify.toml` with the same build and SPA fallback settings.
-
-For a backend payment and delivery integration, deploy that service separately or add protected serverless functions. Keep its secrets in the host's server-side environment settings, never in `src/` or `VITE_` variables.
+- Connect the repository, use `npm run build` as the build command, and `dist` as the publish directory. `netlify.toml` configures the functions and SPA fallback.
+- Set `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, and `VITE_RAZORPAY_KEY_ID` in the site's environment settings. Redeploy after changing build variables.

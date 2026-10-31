@@ -14,7 +14,34 @@ import {
   Sprout,
   X,
 } from 'lucide-react'
-import { PAYMENT_LINK } from './config.js'
+
+const RAZORPAY_CHECKOUT_URL = 'https://checkout.razorpay.com/v1/checkout.js'
+let razorpayScriptPromise
+
+function loadRazorpayCheckout() {
+  if (window.Razorpay) return Promise.resolve()
+  if (razorpayScriptPromise) return razorpayScriptPromise
+
+  razorpayScriptPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script')
+    script.src = RAZORPAY_CHECKOUT_URL
+    script.async = true
+    script.onload = () => resolve()
+    script.onerror = () => {
+      razorpayScriptPromise = undefined
+      reject(new Error('Razorpay Checkout could not be loaded. Check your connection and try again.'))
+    }
+    document.head.appendChild(script)
+  })
+
+  return razorpayScriptPromise
+}
+
+async function readApiResponse(response) {
+  const result = await response.json().catch(() => ({}))
+  if (!response.ok) throw new Error(result.error || 'The payment request could not be completed.')
+  return result
+}
 
 const navLinks = [
   { label: 'Home', href: '#home' },
@@ -175,7 +202,10 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [openFaq, setOpenFaq] = useState(0)
   const [activePolicy, setActivePolicy] = useState('')
-  const paymentConfigured = /^https:\/\//i.test(PAYMENT_LINK)
+  const [checkoutBusy, setCheckoutBusy] = useState(false)
+  const [checkoutMessage, setCheckoutMessage] = useState('')
+  const razorpayKeyId = import.meta.env.VITE_RAZORPAY_KEY_ID
+  const paymentConfigured = Boolean(razorpayKeyId)
 
   useEffect(() => {
     function onKeyDown(event) {
@@ -190,6 +220,71 @@ function App() {
 
   function closeMenu() {
     setMenuOpen(false)
+  }
+
+  async function startCheckout() {
+    if (!paymentConfigured || checkoutBusy) return
+
+    setCheckoutBusy(true)
+    setCheckoutMessage('Preparing secure checkout…')
+
+    try {
+      await loadRazorpayCheckout()
+      const order = await readApiResponse(await fetch('/api/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      }))
+
+      const checkout = new window.Razorpay({
+        key: razorpayKeyId,
+        amount: order.amount,
+        currency: order.currency,
+        name: 'HairCare Guide',
+        description: 'The Hair Fall Control Guide · Digital edition',
+        order_id: order.order_id,
+        theme: { color: '#254b3d' },
+        modal: {
+          ondismiss: () => {
+            setCheckoutBusy(false)
+            setCheckoutMessage('Checkout closed before this site received a payment response. If you completed payment, do not retry yet.')
+          },
+        },
+        handler: async (payment) => {
+          setCheckoutMessage('Payment received. Verifying it securely…')
+
+          try {
+            const result = await readApiResponse(await fetch('/api/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_payment_id: payment.razorpay_payment_id,
+                razorpay_order_id: payment.razorpay_order_id,
+                razorpay_signature: payment.razorpay_signature,
+              }),
+            }))
+
+            if (!result.verified) throw new Error('Payment could not be verified.')
+          setCheckoutMessage('Payment signature verified. Secure PDF delivery is not connected yet; this site is not ready for customer purchases.')
+          } catch (error) {
+            setCheckoutMessage(`${error.message || 'Payment verification failed.'} Do not pay again until the seller confirms your order.`)
+          } finally {
+            setCheckoutBusy(false)
+          }
+        },
+      })
+
+      checkout.on('payment.failed', (event) => {
+        const description = event?.error?.description
+        setCheckoutBusy(false)
+        setCheckoutMessage(description ? `Payment failed: ${description}` : 'Payment failed. Please try again.')
+      })
+
+      checkout.open()
+    } catch (error) {
+      setCheckoutBusy(false)
+      setCheckoutMessage(error.message || 'Checkout could not be started. Please try again.')
+    }
   }
 
   return (
@@ -275,12 +370,21 @@ function App() {
               <p className="price-subtitle">A 90-Day Journey to Healthier Hair, Better Scalp Care &amp; Stronger Hair-Care Habits</p>
               <div className="price-rule" />
               <div className="price-amount"><span>₹</span>9<small>one-time payment</small></div>
-              {paymentConfigured ? (
-                <a className="buy-button" href={PAYMENT_LINK}>Buy now — ₹9 <ArrowRight size={17} /></a>
-              ) : (
-                <button className="buy-button buy-button--disabled" type="button" disabled aria-describedby="payment-config-note">Buy now — ₹9 <ArrowRight size={17} /></button>
-              )}
-              {!paymentConfigured && <p className="payment-config-note" id="payment-config-note">Add your Razorpay Payment Link URL in <code>src/config.js</code> to enable checkout.</p>}
+              <button
+                className={`buy-button${(!paymentConfigured || checkoutBusy) ? ' buy-button--disabled' : ''}`}
+                type="button"
+                onClick={startCheckout}
+                disabled={!paymentConfigured || checkoutBusy}
+                aria-describedby="payment-config-note checkout-message"
+              >
+                {checkoutBusy ? 'Opening checkout…' : 'Buy now — ₹9'} <ArrowRight size={17} />
+              </button>
+              <p className="payment-config-note" id="payment-config-note">
+                {paymentConfigured
+                  ? 'Checkout is configured. Secure PDF delivery is not connected; do not accept customer payments yet.'
+                  : <>Set <code>VITE_RAZORPAY_KEY_ID</code> to enable checkout.</>}
+              </p>
+              <p className="payment-config-note" id="checkout-message" aria-live="polite" role="status">{checkoutMessage}</p>
               <div className="price-assurance"><ShieldCheck size={16} /><span>One-time payment</span><i /><span>Digital PDF</span></div>
               <p className="physical-note">Digital product. No physical delivery.</p>
               <p className="refund-note">No refunds for completed digital purchases, except where required by law.</p>
