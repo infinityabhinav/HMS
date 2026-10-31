@@ -24,44 +24,44 @@ const navLinks = [
 const topics = [
   {
     number: '01',
-    title: 'Everyday hair-care habits',
-    description: 'Gentle hair care, better sleep, hydration and balanced nutrition—small habits that fit real life.',
+    title: 'Understanding hair fall',
+    description: 'Learn how shedding differs from breakage, which patterns to notice, and why the cause matters.',
     icon: Moon,
   },
   {
     number: '02',
-    title: 'Traditional herbal practices',
-    description: 'An introduction to traditional ingredients including amla, rosemary, neem, fenugreek and kalonji.',
+    title: 'Everyday foundations',
+    description: 'Sleep, hydration, balanced nutrition, gentle handling, stress management and simple tracking.',
     icon: Sprout,
   },
   {
     number: '03',
-    title: 'A happier, healthier scalp',
-    description: 'Understand cleansing, dandruff and irritation, with practical basics for a considered scalp routine.',
+    title: 'Tradition, read with care',
+    description: 'Amla, neem, rosemary, fenugreek, kalonji, oiling and massage—with evidence and safety context.',
     icon: Droplets,
   },
   {
     number: '04',
-    title: 'A 90-day hair-care tracker',
-    description: 'Make space to notice your habits, observe changes and build a routine you can keep up with.',
+    title: 'Scalp care & next steps',
+    description: 'Scalp concerns, when to seek professional care, and a 90-day plan with tracker and journal.',
     icon: CircleCheck,
   },
 ]
 
 const included = [
-  'A detailed hair-care eBook',
-  'Practical lifestyle guidance',
-  'Traditional herbal-care information',
-  'Scalp-care guidance',
-  'Printable 90-day tracker',
-  'Hair-care checklists',
-  'Educational illustrations',
+  'A 54-page guide in 10 chapters',
+  'Hair shedding, breakage and common causes',
+  'Everyday care and nutrition guidance',
+  'Traditional practices with evidence context',
+  'Scalp-care safety and when to seek care',
+  'A 90-day plan, tracker and weekly checklist',
+  'Recipe cards, progress journal and references',
 ]
 
 const questions = [
   {
     question: 'What will I receive?',
-    answer: 'You will receive a digital PDF eBook containing hair-care guidance, traditional herbal practices, scalp-care information and a 90-day tracker.',
+    answer: 'The 54-page PDF has ten chapters on hair shedding, breakage, everyday care, traditional practices, scalp care and a 90-day plan. It also includes trackers, recipe cards and references.',
   },
   {
     question: 'How much does it cost?',
@@ -69,7 +69,7 @@ const questions = [
   },
   {
     question: 'How will I receive the PDF?',
-    answer: 'After successful payment, the digital product will be made available through the configured download process.',
+    answer: 'The PDF should be made available only after payment is verified. This storefront still needs its secure delivery integration.',
   },
   {
     question: 'Can this guide guarantee hair fall control?',
@@ -82,7 +82,7 @@ const questions = [
 ]
 
 const policies = {
-  'About the Guide': 'The Hair Fall Control Guide is a digital, educational resource about everyday hair-care habits, scalp health, traditional herbal practices and routine tracking.',
+  'About the Guide': 'A 54-page, ten-chapter educational guide to hair shedding, breakage, everyday care, traditional practices with evidence context, scalp care and when to seek professional advice. It includes a 90-day plan, trackers, recipe cards and references.',
   'Contact Us': 'Add your customer-support email address here before launch so buyers know how to reach you with questions about their order.',
   'Privacy Policy': 'Add your business contact details and final privacy policy before launch. If you later connect a payment provider or analytics service, explain what information those services collect and link to their policies.',
   'Terms and Conditions': 'This is a digital educational product. Add your seller details, delivery terms, permitted use and any other terms that apply to your business before launch.',
@@ -120,16 +120,16 @@ function BookMockup() {
       <div className="book">
         <div className="book-spine" />
         <div className="book-cover">
-          <div className="cover-topline"><span>HAIRCARE GUIDE</span><span>VOL. 01</span></div>
+          <div className="cover-topline"><span>HAIRCARE GUIDE</span><span>10 CHAPTERS</span></div>
           <div className="cover-rule" />
-          <p className="cover-kicker">A GENTLER APPROACH TO</p>
+          <p className="cover-kicker">EVIDENCE-INFORMED WELLNESS GUIDE</p>
           <h2>THE HAIR<br />FALL CONTROL<br /><em>GUIDE</em></h2>
-          <p className="cover-subtitle">A 90-Day Journey to<br />Healthier Hair</p>
+          <p className="cover-subtitle">A 90-Day Journey to Healthier Hair,<br />Better Scalp Care &amp; Stronger Hair-Care Habits</p>
           <BotanicalArtwork />
-          <div className="cover-footer"><span>CARE, ROOTED IN ROUTINE</span><span>2026</span></div>
+          <div className="cover-footer"><span>10 CHAPTERS · RECIPE CARDS</span><span>90-DAY PLAN</span></div>
         </div>
       </div>
-      <div className="book-caption"><span className="caption-dot" /> A thoughtful guide, made for everyday life</div>
+      <div className="book-caption"><span className="caption-dot" /> Illustrative cover mockup · title and subtitle from PDF</div>
     </div>
   )
 }
@@ -137,23 +137,23 @@ function BookMockup() {
 function PreviewSpread() {
   return (
     <div className="preview-stage" aria-label="Illustrative preview of sample eBook pages">
-      <div className="preview-note"><Sparkles size={14} /> SAMPLE PAGE LAYOUTS</div>
+      <div className="preview-note"><Sparkles size={14} /> ILLUSTRATIVE PREVIEW · GUIDE TOPICS</div>
       <div className="paper paper--back">
-        <span className="paper-label">CHAPTER 02</span>
-        <span className="paper-heading">A calmer scalp<br />starts with care</span>
-        <span className="paper-copy">A few mindful steps can help you get to know your scalp and create a routine that feels comfortable.</span>
+        <span className="paper-label">CHAPTER 01 · UNDERSTANDING HAIR FALL</span>
+        <span className="paper-heading">Shedding or<br />breakage?</span>
+        <span className="paper-copy">The guide explains the difference between hairs shed from the growth cycle and strands that break from damage.</span>
         <span className="paper-art"><Leaf size={30} /></span>
         <span className="paper-lines"><i /><i /><i /><i /></span>
         <span className="paper-page">08</span>
       </div>
       <div className="paper paper--front">
-        <span className="paper-label">YOUR 90-DAY PRACTICE</span>
-        <span className="paper-heading">Small steps,<br />noticed over time.</span>
-        <span className="paper-copy">A simple tracker for routines, observations and the habits you want to build.</span>
+        <span className="paper-label">CHAPTER 08 · 90-DAY PLAN</span>
+        <span className="paper-heading">Track calmly.<br />Review monthly.</span>
+        <span className="paper-copy">The plan includes a habit tracker, weekly checklist, monthly photo record and progress journal.</span>
         <span className="tracker-grid" aria-hidden="true">{Array.from({ length: 28 }, (_, index) => <i key={index} />)}</span>
-        <span className="paper-footer">WEEK ONE <span>01 — 07</span></span>
+        <span className="paper-footer">REVIEW POINTS <span>30 · 60 · 90</span></span>
       </div>
-      <div className="preview-caption"><span>Designed to read at your own pace.</span><span>PDF · PRINTABLE PAGES</span></div>
+      <div className="preview-caption"><span>Text summarized from the guide; sample layout only.</span><span>54-PAGE PDF · 10 CHAPTERS</span></div>
     </div>
   )
 }
@@ -212,13 +212,13 @@ function App() {
           <div className="hero-copy">
             <div className="eyebrow"><span className="eyebrow-leaf"><Leaf size={13} /></span> DIGITAL HAIR-CARE GUIDE</div>
             <h1>Understand your hair.<br /><span>Build a better</span><br /><em>hair-care routine.</em></h1>
-            <p className="hero-description">Practical hair-care habits, scalp guidance, traditional herbal practices and a simple 90-day tracker—in one thoughtful guide.</p>
+            <p className="hero-description">A 54-page guide to hair shedding and breakage, everyday care, traditional practices with evidence context, scalp concerns and a 90-day plan.</p>
             <div className="hero-purchase-row">
               <div className="hero-price"><span>JUST</span><strong>₹9</strong><span>ONE TIME</span></div>
               <span className="hero-price-divider" />
               <a className="hero-cta" href="#pricing">Get your guide <span>— ₹9</span><ArrowRight size={17} /></a>
             </div>
-            <div className="hero-assurance"><ShieldCheck size={15} strokeWidth={1.8} /><span>Digital PDF <i /> Instant download after purchase</span></div>
+            <div className="hero-assurance"><ShieldCheck size={15} strokeWidth={1.8} /><span>Digital PDF <i /> Payment must be verified before delivery</span></div>
             <a className="hero-scroll" href="#about"><span>Explore the guide</span><ArrowDown size={14} /></a>
           </div>
           <div className="hero-visual">
@@ -238,8 +238,8 @@ function App() {
 
         <section className="about section-shell section-pad" id="about">
           <div className="section-heading">
-            <div><div className="section-kicker">A GUIDE YOU CAN GROW WITH</div><h2>Everything you need to build<br /><em>a better hair-care routine.</em></h2></div>
-            <p>A clear, approachable starting point for learning about your hair and caring for it with a little more intention.</p>
+            <div><div className="section-kicker">INSIDE THE 54-PAGE GUIDE</div><h2>Hair fall, scalp care<br /><em>and everyday habits.</em></h2></div>
+            <p>Ten chapters cover common causes, daily foundations, traditional practices with evidence context, scalp care, when to seek professional advice and a 90-day plan.</p>
           </div>
           <div className="topic-grid">
             {topics.map(({ number, title, description, icon: Icon }) => (
@@ -256,7 +256,7 @@ function App() {
             <div className="included-copy">
               <div className="section-kicker section-kicker--light">MADE TO BE USEFUL</div>
               <h2>Your digital guide<br /><em>includes.</em></h2>
-              <p>Easy-to-follow information and useful pages you can return to as your routine takes shape.</p>
+              <p>Ten chapters, from understanding common patterns to building a 90-day plan, with traditional use clearly distinguished from evidence.</p>
               <ul className="included-list">{included.map((item) => <li key={item}><span><Check size={13} /></span>{item}</li>)}</ul>
               <a className="text-link text-link--light" href="#pricing">See the guide <ArrowRight size={15} /></a>
             </div>
@@ -270,9 +270,9 @@ function App() {
           <div className="pricing-layout section-shell">
             <div className="pricing-note"><span className="quote-mark">“</span><p>Make room for simple habits, learn as you go, and find a routine that feels like yours.</p><span className="note-signature"><Leaf size={14} /> THE HAIRCARE GUIDE</span></div>
             <article className="price-card">
-              <div className="price-card-top"><span className="price-tag"><Sparkles size={13} /> THE COMPLETE GUIDE</span><span className="price-edition">DIGITAL EDITION</span></div>
+              <div className="price-card-top"><span className="price-tag"><Sparkles size={13} /> 10-CHAPTER GUIDE</span><span className="price-edition">DIGITAL EDITION</span></div>
               <h3>The Hair Fall<br />Control Guide</h3>
-              <p className="price-subtitle">A Practical Guide to Better Hair-Care Habits, Scalp Health &amp; Traditional Herbal Practices</p>
+              <p className="price-subtitle">A 90-Day Journey to Healthier Hair, Better Scalp Care &amp; Stronger Hair-Care Habits</p>
               <div className="price-rule" />
               <div className="price-amount"><span>₹</span>9<small>one-time payment</small></div>
               {paymentConfigured ? (
